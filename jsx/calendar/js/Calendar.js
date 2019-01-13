@@ -42,6 +42,12 @@ const Calendar = ({date}) => {
     return <th scope="col" title={weekdayToColLong}>{weekdayToColShort}</th>
   });
 
+  const colGroup = [...Array(daysIntoWeek)].map((_, i) => {
+    const uiWeekEnd = (i === 5 || i === 6) && 'ui-datepicker-week-end';
+
+    return <col className={uiWeekEnd}/>
+  });
+
   function capitalize(str) {
     return str[0].toUpperCase() + str.substring(1);
   }
@@ -65,13 +71,7 @@ const Calendar = ({date}) => {
       </div>
       <table className="ui-datepicker-calendar">
         <colgroup>
-          <col/>
-          <col/>
-          <col/>
-          <col/>
-          <col/>
-          <col className="ui-datepicker-week-end"/>
-          <col className="ui-datepicker-week-end"/>
+          {colGroup}
         </colgroup>
         <thead>
         <tr>
