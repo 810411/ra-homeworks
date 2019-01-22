@@ -11,7 +11,13 @@ const FeedbackForm = ({data, onSubmit}) => {
       formObj = {};
 
     formData.forEach((value, key) => {
-      formObj[key] = value;
+      if (formObj[key] === undefined) {
+        formObj[key] = value;
+      } else if (Array.isArray(formObj[key])) {
+        formObj[key] = [...formObj[key], value];
+      } else {
+        formObj[key] = [formObj[key], value];
+      }
     });
 
     onSubmit(JSON.stringify(formObj));
