@@ -9,3 +9,33 @@ const DateInput = props => {
     </div>
   )
 };
+
+const birthdayPropType = (props, propName, componentName) => {
+  let birthday = props[propName];
+  let isBirthday = (typeof birthday === 'string') && /^\d{4}-\d{2}-\d{2}$/.test(birthday);
+  if (!isBirthday) {
+    return new Error(`Invalid format ${propName} in ${componentName}. Expected:"YYYY-MM-DD". Supplied: "${props[propName]}"`);
+  }
+};
+
+const defaultDate = () => {
+  const
+    date = new Date(),
+    [day, month, year] = date.toLocaleDateString('en-GB').split('/');
+
+  return `${year}-${month}-${day}`
+};
+
+DateInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: birthdayPropType,
+  required: PropTypes.bool,
+};
+
+
+DateInput.defaultProps = {
+  value: defaultDate()
+};

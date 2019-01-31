@@ -8,7 +8,7 @@ class App extends React.Component {
       email: '',
       first_name: '',
       last_name: '',
-      birthday: '',
+      birthday: undefined,
       password: '',
       sex: 'муж'
     };
@@ -41,4 +41,4 @@ class App extends React.Component {
       </div>
     );
   }
-};
+}
