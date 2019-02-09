@@ -2,7 +2,7 @@ class SearchBox extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {fixed: false};
+    this.state = { fixed: false };
     this.setPosition = this.setPosition.bind(this);
   }
 
@@ -15,16 +15,13 @@ class SearchBox extends React.Component {
   }
 
   render() {
-    return <SearchBoxView fixed={this.state.fixed}/>
+    return <SearchBoxView
+      searchBoxRef={el => {this.searchBox = el}}
+      fixed={this.state.fixed} />
   }
 
   isFixed() {
-    const searchBoxTopPosition = document
-      .querySelector('.search-box')
-      .getBoundingClientRect()
-      .top;
-
-    return searchBoxTopPosition < window.scrollY
+    return this.searchBox.offsetTop < window.scrollY
   }
 
   setPosition() {
