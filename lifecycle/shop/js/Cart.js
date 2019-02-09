@@ -8,7 +8,6 @@ class Cart extends React.Component {
   }
 
   render() {
-    console.log('Cart update');
     return (
       <CartView {...this.props} />
     );

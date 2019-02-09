@@ -1,4 +1,17 @@
 class ProgressBar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.outerCircle = {
+      color: '#4ca89a',
+      radius: 52
+    };
+    this.innerCircle = {
+      color: '#96d6f4',
+      radius: 45
+    };
+    this.lineWeight = 7;
+  }
 
   componentDidMount() {
     const {completed, total} = this.props;
@@ -22,34 +35,28 @@ class ProgressBar extends React.Component {
 
   drawProgressBar(completed, total) {
     const
-      outerCircleColor = '#4ca89a',
-      outerCircleRadius = 52,
-      innerCircleColor = '#96d6f4',
-      innerCircleRadius = 45,
-      innerCircleDone = completed/total;
-
-    const
       canvas = document.getElementById('progressCanvas'),
       ctx = canvas.getContext('2d');
 
     canvas.width = 150;
     canvas.height = 100;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 7;
+    ctx.lineWidth = this.lineWeight;
 
     const
       canvasCenterX = canvas.width / 2,
-      canvasCenterY = canvas.height / 2;
+      canvasCenterY = canvas.height / 2,
+      innerCircleDone = completed/total;
 
     const circle = (color, radius, done = 1) => {
       ctx.beginPath();
       ctx.strokeStyle = color;
-      ctx.arc(canvasCenterX, canvasCenterY,radius - ctx.lineWidth,0,2 * Math.PI * done);
+      ctx.arc(canvasCenterX, canvasCenterY,radius - this.lineWeight, 0, 2 * Math.PI * done);
       ctx.stroke();
     };
 
-    circle(outerCircleColor, outerCircleRadius);
-    circle(innerCircleColor, innerCircleRadius, innerCircleDone);
+    circle(this.outerCircle.color, this.outerCircle.radius);
+    circle(this.innerCircle.color, this.innerCircle.radius, innerCircleDone);
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
