@@ -1,57 +1,74 @@
 'use strict';
 
-const withTableFormatted = WrappedComponent => props => {
-  const {list} = props;
+const withTableFormatted = WrappedComponent => {
+  return class extends React.Component {
 
-  const currentYear = 2018; // (new Date()).getFullYear();
+    static get displayName() {
+      const name = WrappedComponent.displayName ||
+        WrappedComponent.name || 'Component';
+      return `WithTableFormatted(${name})`;
+    }
 
-  let listFormatted;
+    shouldComponentUpdate(nextProps) {
+      return nextProps.list !== this.props.list
+    }
 
-  if (WrappedComponent === SortTable) {
-    listFormatted = list.sort((a, b) =>
-      new Date(b.date) - new Date(a.date));
+    render() {
+      return (
+        <WrappedComponent {...this.props} list={this.formatList()}/>
+      )
+    }
 
-  } else if (WrappedComponent === MonthTable) {
-    listFormatted = list
-      .sort((a, b) =>
-        new Date(a.date) - new Date(b.date))
-      .reduce((result, {date, amount}) => {
-        const itemDate = new Date(date);
+    formatList() {
+      const list = this.props.list;
+      const currentYear = 2018; // (new Date()).getFullYear();
+      const wrappedComponentName = WrappedComponent.name || WrappedComponent.displayName;
 
-        if (itemDate.getFullYear() === currentYear) {
-          const
-            month = itemDate.toLocaleString('en-US', {month: 'short'}),
-            indexOfMonth = result.findIndex(el => el.month === month);
+      if (wrappedComponentName === 'SortTable') {
+        return list.sort((a, b) => b.amount - a.amount);
 
-          if (indexOfMonth > -1) {
-            result[indexOfMonth].amount += amount;
-          } else {
-            return [...result, {month, amount}];
-          }
-        }
+      } else if (wrappedComponentName === 'MonthTable') {
+        return list
+          .sort((a, b) =>
+            new Date(a.date) - new Date(b.date))
+          .reduce((result, {date, amount}) => {
+            const itemDate = new Date(date);
 
-        return result
-      }, [])
+            if (itemDate.getFullYear() === currentYear) {
+              const
+                month = itemDate.toLocaleString('en-US', {month: 'short'}),
+                indexOfMonth = result.findIndex(el => el.month === month);
 
-  } else if (WrappedComponent === YearTable) {
-    listFormatted = list.reduce((result, {date, amount}) => {
-      const
-        year = (new Date(date)).getFullYear(),
-        indexOfYear = result.findIndex(el => el.year === year);
+              if (indexOfMonth > -1) {
+                result[indexOfMonth].amount += amount;
+              } else {
+                return [...result, {month, amount}];
+              }
+            }
 
-      if (indexOfYear > -1) {
-        result[indexOfYear].amount += amount;
-      } else {
-        return [...result, {year, amount}]
+            return result
+          }, [])
+
+      } else if (wrappedComponentName === 'YearTable') {
+        return list
+          .sort((a, b) =>
+            new Date(a.date) - new Date(b.date))
+          .reduce((result, {date, amount}) => {
+            const
+              year = (new Date(date)).getFullYear(),
+              indexOfYear = result.findIndex(el => el.year === year);
+
+            if (indexOfYear > -1) {
+              result[indexOfYear].amount += amount;
+            } else {
+              return [...result, {year, amount}]
+            }
+
+            return result;
+          }, [])
       }
-
-      return result;
-    }, [])
+    }
   }
-
-  return (
-    <WrappedComponent {...props} list={listFormatted}/>
-  )
 };
 
 const MonthTableFormatted = withTableFormatted(MonthTable);

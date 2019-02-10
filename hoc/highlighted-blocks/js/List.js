@@ -1,22 +1,33 @@
 'use strict';
 
-const withWrapper = WrappedComponent => props => {
-  const {views} = props;
+const withWrapper = WrappedComponent => {
+  return class extends React.Component {
 
-  if (views > 1000) {
-    return (
-      <Popular>
-        <WrappedComponent {...props}/>
-      </Popular>
-    )
-  } else if (views < 100) {
-    return (
-      <New>
-        <WrappedComponent {...props}/>
-      </New>
-    )
-  } else {
-    return <WrappedComponent {...props}/>
+    static get displayName() {
+      const name = WrappedComponent.displayName ||
+        WrappedComponent.name || 'Component';
+      return `WithWrapper(${name})`;
+    }
+
+    render() {
+      const {views} = this.props;
+
+      if (views > 1000) {
+        return (
+          <Popular>
+            <WrappedComponent {...this.props}/>
+          </Popular>
+        )
+      } else if (views < 100) {
+        return (
+          <New>
+            <WrappedComponent {...this.props}/>
+          </New>
+        )
+      } else {
+        return <WrappedComponent {...this.props}/>
+      }
+    }
   }
 };
 
