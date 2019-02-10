@@ -29,13 +29,13 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <canvas id="progressCanvas" className="progress"/>
+      <canvas id="progressCanvas" className="progress" ref="progressCanvas"/>
     );
   }
 
   drawProgressBar(completed, total) {
     const
-      canvas = document.getElementById('progressCanvas'),
+      canvas = this.refs.progressCanvas,
       ctx = canvas.getContext('2d');
 
     canvas.width = 150;
