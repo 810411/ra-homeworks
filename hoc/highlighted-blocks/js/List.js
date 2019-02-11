@@ -24,9 +24,9 @@ const withWrapper = WrappedComponent => {
             <WrappedComponent {...this.props}/>
           </New>
         )
-      } else {
-        return <WrappedComponent {...this.props}/>
       }
+
+      return <WrappedComponent {...this.props}/>
     }
   }
 };

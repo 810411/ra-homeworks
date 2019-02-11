@@ -21,52 +21,48 @@ const withTableFormatted = WrappedComponent => {
 
     formatList() {
       const list = this.props.list;
-      const currentYear = 2018; // (new Date()).getFullYear();
       const wrappedComponentName = WrappedComponent.name || WrappedComponent.displayName;
 
       if (wrappedComponentName === 'SortTable') {
         return list.sort((a, b) => b.amount - a.amount);
 
       } else if (wrappedComponentName === 'MonthTable') {
-        return list
-          .sort((a, b) =>
-            new Date(a.date) - new Date(b.date))
-          .reduce((result, {date, amount}) => {
-            const itemDate = new Date(date);
-
-            if (itemDate.getFullYear() === currentYear) {
-              const
-                month = itemDate.toLocaleString('en-US', {month: 'short'}),
-                indexOfMonth = result.findIndex(el => el.month === month);
-
-              if (indexOfMonth > -1) {
-                result[indexOfMonth].amount += amount;
-              } else {
-                return [...result, {month, amount}];
-              }
-            }
-
-            return result
-          }, [])
+        return this.formatListByDateItem(list, 'month')
 
       } else if (wrappedComponentName === 'YearTable') {
-        return list
-          .sort((a, b) =>
-            new Date(a.date) - new Date(b.date))
-          .reduce((result, {date, amount}) => {
-            const
-              year = (new Date(date)).getFullYear(),
-              indexOfYear = result.findIndex(el => el.year === year);
-
-            if (indexOfYear > -1) {
-              result[indexOfYear].amount += amount;
-            } else {
-              return [...result, {year, amount}]
-            }
-
-            return result;
-          }, [])
+        return this.formatListByDateItem(list, 'year')
       }
+    }
+
+    formatListByDateItem(list, dateItem) {
+      const currentYear = 2018; // (new Date()).getFullYear();
+
+      return list
+        .sort((a, b) =>
+          new Date(a.date) - new Date(b.date))
+        .reduce((result, {date, amount}) => {
+          const dateFromList = new Date(date);
+
+          let dateItemValue;
+
+          if (dateItem === 'month') {
+            dateItemValue = dateFromList.toLocaleString('en-US', {[dateItem]: 'short'});
+          } else if (dateItem === 'year') {
+            dateItemValue = (new Date(date)).getFullYear()
+          }
+
+          if ((dateItem === 'month' && dateFromList.getFullYear() === currentYear) || dateItem === 'year') {
+            const indexOfDateItemValue = result.findIndex(el => el[dateItem] === dateItemValue);
+
+            if (indexOfDateItemValue > -1) {
+              result[indexOfDateItemValue].amount += amount;
+            } else {
+              return [...result, {[dateItem]: dateItemValue, amount}];
+            }
+          }
+
+          return result
+        }, [])
     }
   }
 };
