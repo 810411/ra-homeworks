@@ -1,8 +1,16 @@
 class SubscribtionPage extends React.Component {
+
+  componentWillUnmount() {
+    const changeLocation = confirm('Уверены ли вы, что готовы уйти со страницы');
+
+    if (!changeLocation) {
+      this.props.history.goBack();
+    }
+  }
+
   render() {
     return (
       <div>
-        <Nav />
         <article className="container m-5">
           <h1>Оформление подписки</h1>
           <p>Досточно только очень сильно захотеть — и подписка офорлмена!</p>
