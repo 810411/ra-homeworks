@@ -1,17 +1,31 @@
 const Inputs = () => (
   <div>
-    <label>
-      Стоимость: <input type="number" name="price" value="2000000"/> руб.
-    </label>
-    <br/>
-    <label>
-      На руках:
-      <input type="number" name="money" value="200000"/> руб.
-    </label>
-    <br/>
-    <label>
-      Срок кредита:
-      <input type="number" name="duration" value="5"/> лет.
-    </label>
+    <Form.Item
+      label="Стоимость: "
+      {...formItemLayout}
+    >
+      <Input type="number"
+             name="price"
+             defaultValue="2000000"
+             addonAfter=" руб."/>
+    </Form.Item>
+    <Form.Item
+      label="На руках: "
+      {...formItemLayout}
+    >
+      <Input type="number"
+             name="money"
+             defaultValue="200000"
+             addonAfter=" руб."/>
+    </Form.Item>
+    <Form.Item
+      label="Срок кредита: "
+      {...formItemLayout}
+    >
+      <Input type="number"
+             name="duration"
+             defaultValue="5"
+             addonAfter=" лет"/>
+    </Form.Item>
   </div>
 );

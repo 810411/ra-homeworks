@@ -1,46 +1,47 @@
 class Form extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       name: '',
       text: '',
       done: false,
-    }
+    };
 
-    this.send = this.send.bind(this)
-    this.handleNameChange = this.handleNameChange.bind(this)
-    this.handleTextChange = this.handleTextChange.bind(this)
+    this.send = this.send.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
   }
 
   send() {
-    this.setState(
-      { done: true },
-      this.handleForm,
-    )
+    this.setState({
+      done: true
+    });
+
+    this.handleForm();
   }
 
   handleForm() {
-    setTimeout(function() {
-      const { name, text } = this.state
-      console.log(name, text)
+    const {name, text} = this.state;
+    console.log(name, text);
 
-      this.setState({ done: false })
-    }, 1000)
+    setTimeout(() =>
+        this.setState({
+          done: false
+        }),
+      1000)
   }
 
   handleNameChange(e) {
-    this.setState({ name: e.target.value })
+    this.setState({name: e.target.value})
   }
 
   handleTextChange(e) {
-    this.setState({ text: e.target.value })
+    this.setState({text: e.target.value})
   }
 
   render() {
-    const { done } = this.state
-
-    console.log(this.state)
+    const {done} = this.state;
 
     return (
       <main className="container">
@@ -52,7 +53,7 @@ class Form extends React.Component {
 
               <label>
                 Имя
-                <input className="input" onChange={this.handleNameChange} />
+                <input className="input" onChange={this.handleNameChange}/>
               </label>
 
               <label>
